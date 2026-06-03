@@ -1,0 +1,40 @@
+# Cấu hình Decap CMS — trang quản trị thêm/sửa bài hát.
+# Dùng Git Gateway + Netlify Identity (bật trong Netlify dashboard).
+backend:
+  name: git-gateway
+  branch: main          # đổi nếu nhánh chính của bạn tên khác
+
+# Tiếng Việt cho giao diện quản trị
+locale: 'vi'
+publish_mode: simple
+
+media_folder: "uploads"     # không dùng nhiều, nhưng Decap yêu cầu có
+public_folder: "/uploads"
+
+collections:
+  - name: "thuvien"
+    label: "Thư viện bài hát"
+    files:
+      - name: "songs"
+        label: "Danh sách bài hát"
+        file: "data/songs.json"
+        format: "json"
+        description: "Bấm vào mục 'Bài hát' rồi cuộn xuống cuối danh sách, bấm 'Add Bài hát' để thêm bài mới."
+        fields:
+          - name: "songs"
+            label: "Bài hát"
+            label_singular: "Bài hát"
+            widget: "list"
+            summary: "{{fields.title}}  —  Chủ đề {{fields.cat}}"
+            fields:
+              - { name: "title", label: "Tên bài hát", widget: "string" }
+              - name: "cat"
+                label: "Chủ đề"
+                widget: "select"
+                default: "1"
+                options:
+                  - { label: "1 · Chúa là ai (He is)", value: "1" }
+                  - { label: "2 · Tôn cao Chúa (You are)", value: "2" }
+                  - { label: "3 · Gần gũi & hiện diện", value: "3" }
+                  - { label: "4 · Cam kết & đáp ứng", value: "4" }
+                  - { label: "Dịp đặc biệt (hôn lễ, xuân)", value: "S" }

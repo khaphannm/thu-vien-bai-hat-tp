@@ -1,0 +1,10 @@
+# Trang tĩnh, không cần build. Netlify chỉ publish thư mục gốc.
+[build]
+  publish = "."
+  command = ""
+
+# Cho phép truy cập /admin/ (Decap CMS)
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/index.html"
+  status = 200
