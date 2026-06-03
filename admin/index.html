@@ -1,6 +1,177 @@
 <!DOCTYPE html>
 <html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Quản trị bài hát</title></head><body>
-<!-- Decap CMS: form thêm/sửa bài hát -->
-<script src="https://unpkg.com/decap-cms@^3.6.0/dist/decap-cms.js"></script>
+<title>Guideline chọn bài hát thờ phượng theo chủ đề</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f6f1e7; --ink:#2a2118; --muted:#8a7d68; --line:#ddd2bc;
+  --c1:#9a5b3b; --c2:#b8862f; --c3:#3f6b63; --c4:#6a4c86; --cs:#7a7264;
+  --card:#fffdf8;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:'Be Vietnam Pro',sans-serif;line-height:1.6;
+  background-image:radial-gradient(circle at 20% 10%,rgba(184,134,47,.05),transparent 40%),radial-gradient(circle at 90% 80%,rgba(63,107,99,.05),transparent 45%);}
+.wrap{max-width:880px;margin:0 auto;padding:48px 22px 90px}
+.hero{text-align:center;padding:30px 0 14px;border-bottom:1px solid var(--line)}
+.hero .eyebrow{font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+.hero h1{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(30px,5.5vw,50px);line-height:1.08;margin:0 0 16px}
+.hero p{color:var(--muted);max-width:560px;margin:0 auto;font-size:15.5px}
+.adminlink{display:inline-block;margin-top:18px;font-size:13.5px;color:var(--c1);text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:1px}
+.flow{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:26px 0 4px}
+.flow a{text-decoration:none;color:var(--ink);background:var(--card);border:1px solid var(--line);
+  padding:8px 14px;border-radius:999px;font-size:13.5px;font-weight:500;display:inline-flex;align-items:center;gap:8px;transition:.18s}
+.flow a:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(42,33,24,.08)}
+.flow a .dot{width:9px;height:9px;border-radius:50%}
+.howto{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:32px 0 8px}
+.howto h3{font-family:'Fraunces',serif;font-weight:600;margin:0 0 6px;font-size:20px}
+.howto p{margin:0;color:var(--muted);font-size:14.5px}
+.howto .steps{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.howto .steps span{font-size:13px;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:6px 12px}
+.search{margin:30px 0 6px;position:relative}
+.search input{width:100%;padding:14px 16px;border-radius:12px;border:1px solid var(--line);background:var(--card);
+  font-family:inherit;font-size:15px;color:var(--ink)}
+.search input:focus{outline:none;border-color:var(--c2);box-shadow:0 0 0 3px rgba(184,134,47,.15)}
+#results{margin-top:10px;display:none}
+#results .row{display:flex;justify-content:space-between;gap:10px;padding:9px 14px;border:1px solid var(--line);
+  background:var(--card);border-radius:10px;margin-bottom:6px;font-size:14.5px;align-items:center}
+#results .tag{font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:999px;white-space:nowrap;color:#fff}
+#results .empty{color:var(--muted);padding:8px 4px;font-size:14px}
+.cat{margin-top:46px;scroll-margin-top:18px}
+.cat-head{display:flex;align-items:center;gap:18px;border-bottom:2px solid var(--ink);padding-bottom:14px}
+.cat-head .num{font-family:'Fraunces',serif;font-size:46px;font-weight:600;line-height:1;width:56px;flex:none;text-align:center}
+.cat-head .kicker{margin:0;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.cat-head h2{font-family:'Fraunces',serif;font-weight:600;margin:2px 0 0;font-size:clamp(21px,3.6vw,29px);line-height:1.12}
+.cat-head .count{margin-left:auto;text-align:right;font-family:'Fraunces',serif;font-size:30px;font-weight:600;line-height:1}
+.cat-head .count span{display:block;font-family:'Be Vietnam Pro';font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.desc{font-size:15.5px;margin:18px 0}
+.signals{background:var(--card);border:1px solid var(--line);border-left:4px solid currentColor;border-radius:12px;padding:16px 20px;margin:16px 0}
+.signals h4,.songlist h4{font-family:'Be Vietnam Pro';text-transform:uppercase;letter-spacing:.14em;font-size:11.5px;color:var(--muted);margin:0 0 10px;font-weight:600}
+.signals ul{margin:0;padding-left:18px}.signals li{margin:4px 0;font-size:14.5px}
+.use{font-size:14.5px;margin:14px 0 4px}
+.use span{display:inline-block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--muted);margin-right:8px}
+.songlist{margin-top:20px}
+ul.songs{list-style:none;margin:0;padding:0;columns:2;column-gap:30px}
+ul.songs li{break-inside:avoid;padding:6px 0 6px 16px;border-bottom:1px dotted var(--line);font-size:14px;position:relative}
+ul.songs li:before{content:"";position:absolute;left:0;top:13px;width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.5}
+#cat1{color:var(--c1)}#cat2{color:var(--c2)}#cat3{color:var(--c3)}#cat4{color:var(--c4)}#catS{color:var(--cs)}
+.cat .desc,.cat .use,.cat .signals li,ul.songs li{color:var(--ink)}
+.note{margin-top:54px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;font-size:14px;color:var(--muted)}
+.note b{color:var(--ink)}
+.loading{text-align:center;color:var(--muted);padding:40px;font-size:15px}
+@media(max-width:620px){ul.songs{columns:1} .cat-head .num{font-size:36px;width:44px}}
+</style></head>
+<body><div class="wrap">
+
+<div class="hero">
+  <p class="eyebrow">Hướng dẫn chọn bài thờ phượng</p>
+  <h1>Bốn chủ đề của một dòng chảy thờ phượng</h1>
+  <p>Thư viện bài hát của hội thánh, sắp xếp theo bốn chủ đề để người mới dễ chọn bài đúng tinh thần từng phần của giờ nhóm.</p>
+  <a class="adminlink" href="/admin/">➕ Thêm / sửa bài hát (trang quản trị)</a>
+</div>
+
+<div class="flow">
+  <a href="#cat1"><span class="dot" style="background:var(--c1)"></span>1 · Chúa là ai</a>
+  <a href="#cat2"><span class="dot" style="background:var(--c2)"></span>2 · Tôn cao Chúa</a>
+  <a href="#cat3"><span class="dot" style="background:var(--c3)"></span>3 · Gần gũi &amp; hiện diện</a>
+  <a href="#cat4"><span class="dot" style="background:var(--c4)"></span>4 · Cam kết &amp; đáp ứng</a>
+</div>
+
+<div class="howto">
+  <h3>Cách dùng nhanh</h3>
+  <p>Bốn chủ đề cũng chính là một dòng chảy tự nhiên của giờ thờ phượng. Một danh sách bài cân đối thường đi từ trái sang phải:</p>
+  <div class="steps">
+    <span>① Tuyên xưng Chúa là ai</span><span>→ ② Tôn cao Ngài</span><span>→ ③ Lắng lại gần Chúa</span><span>→ ④ Dâng mình đáp ứng</span>
+  </div>
+</div>
+
+<div class="search">
+  <input id="q" type="text" placeholder="🔎 Gõ tên bài hát để xem nó thuộc chủ đề nào…" autocomplete="off">
+  <div id="results"></div>
+</div>
+
+<div id="sections"><div class="loading">Đang tải danh sách bài hát…</div></div>
+
+<div class="note">
+  <p><b>Lưu ý khi phân loại.</b> Mỗi bài được xếp theo <em>trọng tâm chính</em> của lời. Nhiều bài bắc cầu qua nhiều chủ đề. Khi đó hãy nghe kỹ <b>câu điệp khúc</b> và <b>đại từ chính</b> (“Ngài là…” = ngôi thứ 3 → chủ đề 1; “Con tôn cao Ngài” = ngôi thứ 2 → chủ đề 2) để quyết định.</p>
+  <p style="margin-bottom:0">Các bài Giáng sinh, Thương khó, Phục sinh nằm trong <b>chủ đề 1</b> vì kể lại Chúa là ai và đã làm gì. Bài cảm tạ thường ở <b>chủ đề 1</b> (mô tả ơn Chúa) hoặc <b>chủ đề 4</b> (dâng lời tạ ơn như một đáp ứng).</p>
+</div>
+
+</div>
+<script>
+const META={
+ "1":{num:"1",sub:"He is · ngôi thứ ba",label:"CHÚA LÀ AI — Tuyên xưng về Chúa",color:"#9a5b3b",
+   desc:"Bài hát <em>kể về</em>, <em>công bố</em> Chúa là Đấng thế nào: bản tính, danh xưng, quyền năng, sự thành tín, và những việc Ngài đã làm (sáng tạo, giáng sinh, thập tự, phục sinh). Người hát đang nói <strong>về</strong> Chúa.",
+   signals:["Câu chủ yếu ở dạng mô tả: “Ngài là…”, “Chúa quyền năng lớn thay”, “Diệu thay là Chúa ta”.","Kể lại câu chuyện Tin Lành: giáng sinh, chịu chết, sống lại.","Xưng nhận Chúa là nơi nương náu / đồn lũy / nguồn sống của tôi.","Cảm tạ vì <em>Chúa là</em> Đấng nhân từ, thành tín."],
+   use:"Mở đầu giờ thờ phượng — đặt nền: nhắc hội chúng chúng ta đang đến với Đấng nào. Cũng dùng cho rao giảng, Giáng sinh, Thương khó, Phục sinh."},
+ "2":{num:"2",sub:"You are · ngôi thứ hai",label:"TÔN CAO CHÚA — Hướng thẳng về Ngài",color:"#b8862f",
+   desc:"Người hát <strong>chuyển sang thưa trực tiếp với Chúa</strong> và dâng lời tôn cao: “Con tôn cao <em>Ngài</em>”, “<em>Ngài</em> xứng đáng”. Đại từ chuyển từ ngôi thứ ba sang ngôi thứ hai.",
+   signals:["Động từ tôn cao do chính người hát: “con tôn cao / chúc tán / tôn vinh Ngài”.","Lời mời gọi hội chúng cùng ngợi khen: “Nào ta hãy…”, “Hãy ca vang…”.","Xưng “Ngài xứng đáng”, “Duy Chúa đáng ca ngợi”.","Nhịp thường vui, mạnh — bài “mở miệng” ngợi khen."],
+   use:"Sau phần tuyên xưng — cao trào ngợi khen. Dẫn hội chúng từ biết về Chúa đến thưa với Chúa."},
+ "3":{num:"3",sub:"Thân mật · trong sự hiện diện",label:"GẦN GŨI & HIỆN DIỆN — Ở bên Chúa",color:"#3f6b63",
+   desc:"Bài hát về sự <strong>thân mật, khao khát, ở trong hiện diện Chúa</strong>: lòng mong gặp Ngài, được Ngài chạm đến, đến gần hơn, mời Thánh Linh ngự xuống.",
+   signals:["Ngôn ngữ khao khát: “khát khao Ngài”, “mong gặp mặt Chúa”, “như nai khát mé nước”.","Xin đến gần: “kéo con đến gần hơn”, “chạm lòng con”.","Mời gọi hiện diện / Thánh Linh: “xin Thần Linh ngự đến”, “đổ đầy lòng con”.","Thường chậm, êm, cho giờ tĩnh nguyện."],
+   use:"Giữa giờ nhóm, sau ngợi khen — hạ nhịp để hội chúng lắng lại bên Chúa."},
+ "4":{num:"4",sub:"Phản hồi với Chúa qua đời sống",label:"CAM KẾT & ĐÁP ỨNG — Bằng hành động",color:"#6a4c86",
+   desc:"Bài hát về <strong>quyết định, dâng hiến, đầu phục, bước theo, ra đi phục vụ</strong> — con người đáp lại Chúa bằng hành động cụ thể.",
+   signals:["Động từ cam kết: “con xin dâng / hiến / quyết theo / sống cho Ngài”.","Thuận phục ý Chúa, bước theo mỗi ngày.","Sai phái & truyền giáo: “xin sai con đi”, “lên đường”.","Kêu gọi ăn năn / quay về với Chúa."],
+   use:"Cuối giờ nhóm — đáp ứng sau lời giảng: dâng mình, quyết định theo Chúa, nhận sự sai phái."},
+ "S":{num:"+",sub:"Hôn lễ · Xuân",label:"DỊP ĐẶC BIỆT",color:"#7a7264",
+   desc:"Những bài dành cho dịp riêng (hôn lễ, năm mới) — chọn theo chương trình buổi lễ.",
+   signals:[],use:""}
+};
+const CATNAME={"1":"1 · Chúa là ai","2":"2 · Tôn cao Chúa","3":"3 · Gần gũi & hiện diện","4":"4 · Cam kết & đáp ứng","S":"Dịp đặc biệt"};
+const ORDER=["1","2","3","4","S"];
+let DATA=[];
+
+function norm(s){return s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function render(){
+  const groups={}; ORDER.forEach(c=>groups[c]=[]);
+  DATA.forEach(d=>{const c=String(d.cat); if(groups[c]) groups[c].push(d.title);});
+  ORDER.forEach(c=>groups[c]=[...new Set(groups[c])].sort((a,b)=>norm(a).localeCompare(norm(b))));
+  const html=ORDER.map(c=>{
+    const m=META[c],songs=groups[c];
+    const li=songs.map(t=>`<li>${esc(t)}</li>`).join('');
+    const sig=m.signals.length?`<div class="signals"><h4>Dấu hiệu nhận biết</h4><ul>${m.signals.map(s=>`<li>${s}</li>`).join('')}</ul></div>`:'';
+    const use=m.use?`<p class="use"><span>Khi nào dùng</span>${m.use}</p>`:'';
+    return `<section class="cat" id="cat${c}" style="color:${m.color}">
+      <header class="cat-head">
+        <div class="num">${m.num}</div>
+        <div><p class="kicker">${m.sub}</p><h2>${m.label}</h2></div>
+        <div class="count">${songs.length}<span>bài</span></div>
+      </header>
+      <p class="desc">${m.desc}</p>${sig}${use}
+      <div class="songlist"><h4>Danh sách bài hát</h4><ul class="songs">${li}</ul></div>
+    </section>`;
+  }).join('');
+  document.getElementById('sections').innerHTML=html;
+}
+
+const q=document.getElementById('q'),res=document.getElementById('results');
+q.addEventListener('input',()=>{
+  const v=norm(q.value.trim());
+  if(!v){res.style.display='none';res.innerHTML='';return;}
+  const hits=DATA.filter(d=>norm(d.title).includes(v)).slice(0,40);
+  res.style.display='block';
+  res.innerHTML=hits.length?hits.map(d=>`<div class="row"><span>${esc(d.title)}</span><span class="tag" style="background:${META[String(d.cat)].color}">${CATNAME[String(d.cat)]}</span></div>`).join(''):'<div class="empty">Không tìm thấy bài nào khớp.</div>';
+});
+
+fetch('/data/songs.json?'+Date.now())
+  .then(r=>r.json())
+  .then(j=>{DATA=j.songs||j; render();})
+  .catch(()=>{document.getElementById('sections').innerHTML='<div class="loading">Không tải được danh sách. Hãy mở qua địa chỉ Netlify (không mở trực tiếp file).</div>';});
+</script>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+  // Bắt link mời/đặt lại mật khẩu từ email, và sau khi đăng nhập thì chuyển vào /admin/
+  if (window.netlifyIdentity) {
+    window.netlifyIdentity.on("init", user => {
+      if (!user) {
+        window.netlifyIdentity.on("login", () => { location.href = "/admin/"; });
+      }
+    });
+  }
+</script>
 </body></html>
